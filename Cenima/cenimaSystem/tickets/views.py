@@ -1,5 +1,11 @@
 from django.shortcuts import render
-from django.http.response import JsonResponse
+from django.http.response import JsonResponse 
+from rest_framework import status , filters 
+from rest_framework.decorators import api_view 
+from .models import *
+from .HttpRequestsMethods import *
+from .serializer import GuestSerializer , MovieSerializer ,ReservSerializer
+from rest_framework.response import Response
 # Create your views here.
 def no_rest_no_models(request):
     guests =  [
@@ -51,9 +57,34 @@ def no_rest_no_models(request):
         ]
     return JsonResponse(guests , safe=False)
     
-  
 
+# model Data Default Django without Rest
+def no_rest_from_model(request):
+    data = Guest.objects.all()
+    response = {
+        'guests': list(data.values('name','Phone'))
+    }
+    return JsonResponse(response)
 
+# useing Rest and Models
+# Function based view 
+# Get And 
+@api_view([Get , Post])
+def VPS_Guest(request):
+     # GET
+    if request.method == 'GET':
+        guests = Guest.objects.all()
+        serializer = GuestSerializer(guests, many=True)
+        return Response(serializer.data)
+    # POST
+    elif request.method == 'POST':
+        serializer = GuestSerializer(data= request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status= status.HTTP_201_CREATED)
+        return Response(serializer.data, status= status.HTTP_400_BAD_REQUEST)
+    
+        
 
 
 
