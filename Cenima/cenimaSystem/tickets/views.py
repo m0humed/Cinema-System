@@ -1,5 +1,5 @@
 from django.http.response import JsonResponse 
-from rest_framework import status , filters 
+from rest_framework import status , filters , generics , mixins 
 from rest_framework.decorators import api_view # it is using with function based view
 from .models import *
 from .HttpRequestsMethods import *
@@ -137,7 +137,7 @@ class CBV_Movies(APIView):
             return Response(serializer.data, status= status.HTTP_201_CREATED)
         return Response(serializer.data, status= status.HTTP_400_BAD_REQUEST)
 
-
+#4.1 Get by ID , Put , Delete 
 class CBV_Movies_pk(APIView):
     def get_Object(self , pk):
         try:
@@ -168,3 +168,16 @@ class CBV_Movies_pk(APIView):
             return Response("Deleted",status=status.HTTP_200_OK)
         except :
             return Response("Has problem during delete", status= status.HTTP_400_BAD_REQUEST)
+
+
+#5 using generic and Mixins With Reservations
+#5.1 Get List , Post New 
+class Mixins_Reservations(mixins.CreateModelMixin , mixins.ListModelMixin,generics.GenericAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = MovieSerializer
+    def get(self , request):
+        return self.list(request)
+    def post(self , request):
+        return self.create(request)
+    
+
