@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.http.response import JsonResponse 
 from rest_framework import status , filters 
 from rest_framework.decorators import api_view 
@@ -6,7 +5,7 @@ from .models import *
 from .HttpRequestsMethods import *
 from .serializer import GuestSerializer , MovieSerializer ,ReservSerializer
 from rest_framework.response import Response
-# Create your views here.
+#1 Create your views here.
 def no_rest_no_models(request):
     guests =  [
                 {
@@ -58,36 +57,65 @@ def no_rest_no_models(request):
     return JsonResponse(guests , safe=False)
     
 
-# model Data Default Django without Rest
+#2 model Data Default Django without Rest
 def no_rest_from_model(request):
     data = Guest.objects.all()
     response = {
-        'guests': list(data.values('name','Phone'))
+        'guests': list(data.values('name','phone'))
     }
     return JsonResponse(response)
 
 # useing Rest and Models
-# Function based view 
-# Get And 
+#3 Function based view 
+
+#3.1 Get And Post 
 @api_view([Get , Post])
 def VPS_Guest(request):
      # GET
-    if request.method == 'GET':
+    if request.method == Get:
         guests = Guest.objects.all()
         serializer = GuestSerializer(guests, many=True)
         return Response(serializer.data)
     # POST
-    elif request.method == 'POST':
+    elif request.method == Post:
         serializer = GuestSerializer(data= request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status= status.HTTP_201_CREATED)
         return Response(serializer.data, status= status.HTTP_400_BAD_REQUEST)
     
-        
+    
+
+#3.2  GetByID , PUT , DELETE
+@api_view([Get , Put  , Delete])
+def VPS_PK(request , pk=1):
+    try:
+        guest = Guest.objects.get(pk = pk)
+    except Guest.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    # GET
+    if request.method == Get:
+        serializer = GuestSerializer(guest)
+        return Response(serializer.data)
+   
+    # Put
+    elif request.method == Put:
+        serializer = GuestSerializer(guest , data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status= status.HTTP_202_ACCEPTED)
+        return Response(serializer.data, status= status.HTTP_400_BAD_REQUEST)
+    
+    # Delete
+    elif request.method == Delete:
+        try :
+            guest.delete()
+            return Response("Deleted",status=status.HTTP_200_OK)
+        except :
+            return Response("Bad", status= status.HTTP_400_BAD_REQUEST)
 
 
 
-
+#4 Class Based Views
 
 
