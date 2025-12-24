@@ -174,7 +174,7 @@ class CBV_Movies_pk(APIView):
 #5.1 Get List , Post New 
 class Mixins_Reservations(mixins.CreateModelMixin , mixins.ListModelMixin,generics.GenericAPIView):
     queryset = Reservation.objects.all()
-    serializer_class = MovieSerializer
+    serializer_class = ReservSerializer
     def get(self , request):
         return self.list(request)
     def post(self , request):

@@ -13,10 +13,20 @@ class GuestSerializer(serializers.ModelSerializer):
         fields="__all__"
 
 class ReservSerializer(serializers.ModelSerializer):
+    movie = MovieSerializer(read_only=True)
+    guest = GuestSerializer(read_only=True)
+
+    movie_id = serializers.PrimaryKeyRelatedField(
+        write_only=True, source='movie', queryset=Movie.objects.all()
+    )
+    guest_id = serializers.PrimaryKeyRelatedField(
+        write_only=True, source='guest', queryset=Guest.objects.all()
+    )
+
     class Meta:
-        model=Reservation
-        fields=["pk" , "reservation_guest","name" , "phone"] 
-        
-        
-        
-        
+        model = Reservation
+        fields = ['pk', 'movie', 'guest', 'movie_id', 'guest_id']
+
+
+
+
