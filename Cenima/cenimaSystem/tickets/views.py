@@ -1,10 +1,12 @@
 from django.http.response import JsonResponse 
 from rest_framework import status , filters 
-from rest_framework.decorators import api_view 
+from rest_framework.decorators import api_view # it is using with function based view
 from .models import *
 from .HttpRequestsMethods import *
 from .serializer import GuestSerializer , MovieSerializer ,ReservSerializer
 from rest_framework.response import Response
+from rest_framework.views import APIView # it is using with class based views
+
 #1 Create your views here.
 def no_rest_no_models(request):
     guests =  [
@@ -117,5 +119,23 @@ def VPS_PK(request , pk=1):
 
 
 #4 Class Based Views
+
+
+#4.1 Get List , Post New 
+class CBV_Movies(APIView):
+    def get(self , request):
+        try:
+            movies = Movie.objects.all()
+        except Movie.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = MovieSerializer(movies , many = True)
+        return Response(serializer.data , status=status.HTTP_200_OK)
+    def post(self , request):
+        serializer = MovieSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status= status.HTTP_201_CREATED)
+        return Response(serializer.data, status= status.HTTP_400_BAD_REQUEST)
+
 
 
