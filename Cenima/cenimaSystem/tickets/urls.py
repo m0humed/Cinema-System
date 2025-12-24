@@ -16,4 +16,8 @@ urlpatterns = [
     path('Mix/Get&SetReservations' , views.Mixins_Reservations.as_view()),
     path('Mix/Get&put&deleteReservations/<int:pk>' , views.Mixins_Reservations_pk.as_view()),
     
+    # Start Genarics Mixins_Reservations
+    path('Genaric/Get&SetReservations' , views.Genaric_Reservations.as_view()),
+    path('Genaric/Get&put&deleteReservations/<int:pk>' , views.Genaric_Reservations_pk.as_view()),
+    
 ]

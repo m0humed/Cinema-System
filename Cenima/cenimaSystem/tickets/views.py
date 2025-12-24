@@ -194,6 +194,17 @@ class Mixins_Reservations_pk(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,m
         return self.destroy(pk)
     
 
+#6 Generics
+#6.1 Get List , Post New 
+class Genaric_Reservations(generics.ListCreateAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservSerializer
 
 
+
+#6.2 Get by ID , Put , Delete 
+
+class Genaric_Reservations_pk(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservSerializer
 
