@@ -137,7 +137,7 @@ class CBV_Movies(APIView):
             return Response(serializer.data, status= status.HTTP_201_CREATED)
         return Response(serializer.data, status= status.HTTP_400_BAD_REQUEST)
 
-#4.1 Get by ID , Put , Delete 
+#4.2 Get by ID , Put , Delete 
 class CBV_Movies_pk(APIView):
     def get_Object(self , pk):
         try:
@@ -180,4 +180,20 @@ class Mixins_Reservations(mixins.CreateModelMixin , mixins.ListModelMixin,generi
     def post(self , request):
         return self.create(request)
     
+
+#5.2 Get by ID , Put , Delete 
+
+class Mixins_Reservations_pk(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin,generics.GenericAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservSerializer
+    def get(self , request , pk):
+        return self.retrieve(pk)
+    def put(self , request , pk):
+        return self.update(request)
+    def delete(self , request , pk):
+        return self.destroy(pk)
+    
+
+
+
 
