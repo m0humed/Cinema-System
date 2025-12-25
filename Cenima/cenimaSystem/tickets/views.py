@@ -7,6 +7,7 @@ from .serializer import GuestSerializer , MovieSerializer ,ReservSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView # it is using with class based views
 from django.http import Http404
+import re
 #1 Create your views here.
 def no_rest_no_models(request):
     guests =  [
@@ -216,4 +217,39 @@ class ViewSets_Movie(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
     
+#8.1 filter movies
+@api_view([Get])
+def filterMovies(request):
+    try:
+        filterd = Movie.objects.filter(
+            name = request.data['name'],
+            hall = request.data['hall']
+        )
+        serialized = MovieSerializer(filterd , many=True )
+        return Response(serialized.data , status=status.HTTP_200_OK)
+    except:
+        return Response(serialized.data , status=status.HTTP_400_BAD_REQUEST)
+
+#8.2 complex filter
+@api_view([Get])
+def complexFilterMovies(request):
+    name = request.query_params.get('name', '').strip()
+    hall = request.query_params.get('hall', '').strip()
+    if not name and not hall:
+        return Response({"detail": "Provide 'name' or 'hall' query parameter."}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        qs = Movie.objects.all()
+        if name:
+            pattern = r'.*' + re.escape(name) + r'.*'
+            qs = qs.filter(name__iregex=pattern)
+        if hall:
+            pattern = r'.*' + re.escape(hall) + r'.*'
+            qs = qs.filter(hall__iregex=pattern)
+        serialized = MovieSerializer(qs, many=True)
+        return Response(serialized.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"detail": "Bad request", "error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 

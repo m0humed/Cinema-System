@@ -11,6 +11,8 @@ urlpatterns = [
     path('FBV/jsonresponsmodel/' , views.no_rest_from_model ),
     path('FBV/jsonRestModel/' , views.VPS_Guest ),
     path('FBV/jsonRestModelPK/<int:pk>' , views.VPS_PK ),
+    path('FBV/MovieSearch',views.filterMovies),
+    path('FBV/ComplexMovieSearch',views.complexFilterMovies),
     
     # Start CBV Class Based Model
     path('CBV/Get&SetMovies',views.CBV_Movies.as_view()),
