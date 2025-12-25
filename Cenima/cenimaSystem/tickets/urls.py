@@ -26,6 +26,6 @@ urlpatterns = [
     path('Genaric/Get&SetReservations' , views.Genaric_Reservations.as_view()),
     path('Genaric/Get&put&deleteReservations/<int:pk>' , views.Genaric_Reservations_pk.as_view()),
     
-    # Start ViewSets ruting
+    # Start ViewSets routing
     path('Viewsets/AllInOne',include(routers.urls)),
 ]

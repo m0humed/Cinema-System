@@ -37,19 +37,29 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework', # to generate restful API
+    'rest_framework.authtoken', # use to add toksen Authentication
     'tickets', # Add tickets App 
 ]
 
-# Authentication and permissions => using BaseAuthentication
+#1 Authentication and permissions => using BaseAuthentication
 # => not prefered because need username and password every connections
+# REST_FRAMEWORK = {
+#     # comment it to use special class authentication
+#     # 'DEFAULT_AUTHENTICATION_CLASSES':
+#     # ['rest_framework.authentication.BasicAuthentication'],
+#     # 'DEFAULT_PERMISSION_CLASSES':[
+#     #     'rest_framework.permissions.IsAuthenticated'
+#     # ]
+# }
+# permission types [IsAuthenticated |IsAdminUser|IsAuthenticatedOrReadOnly|DjangoModel=>+1]
+#2 Authentication and permissions => using TokenAuthentication
 REST_FRAMEWORK = {
     # 'DEFAULT_AUTHENTICATION_CLASSES':
-    # ['rest_framework.authentication.BasicAuthentication'],
+    # ['rest_framework.authentication.TokenAuthentication'],
     # 'DEFAULT_PERMISSION_CLASSES':[
     #     'rest_framework.permissions.IsAuthenticated'
     # ]
 }
-# permission types [IsAuthenticated |IsAdminUser|IsAuthenticatedOrReadOnly|DjangoModel=>+1]
 
 
 

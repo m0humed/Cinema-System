@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView # it is using with class based views
 from django.http import Http404
 import re
-from rest_framework.authentication import BasicAuthentication
+from rest_framework.authentication import BasicAuthentication , TokenAuthentication
 from rest_framework.permissions import IsAuthenticated , IsAuthenticatedOrReadOnly
 
 #1 Create your views here.
@@ -208,7 +208,8 @@ class Mixins_Reservations_pk(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,m
 class Genaric_Reservations(generics.ListCreateAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservSerializer
-
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 #6.2 Get by ID , Put , Delete 
@@ -216,6 +217,8 @@ class Genaric_Reservations(generics.ListCreateAPIView):
 class Genaric_Reservations_pk(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 #7 ViewSets All in one
