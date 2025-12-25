@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,6 +39,19 @@ INSTALLED_APPS = [
     'rest_framework', # to generate restful API
     'tickets', # Add tickets App 
 ]
+
+# Authentication and permissions => using BaseAuthentication
+# => not prefered because need username and password every connections
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':
+    ['rest_framework.authentication.BasicAuthentication'],
+    'DEFAULT_PERMISSION_CLASSES':[
+        'rest_framework.permissions.IsAuthenticated'
+    ]
+}
+# permission types [IsAuthenticated |IsAdminUser|IsAuthenticatedOrReadOnly|DjangoModel=>+1]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
