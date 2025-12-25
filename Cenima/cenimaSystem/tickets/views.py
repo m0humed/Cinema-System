@@ -8,6 +8,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView # it is using with class based views
 from django.http import Http404
 import re
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated , IsAuthenticatedOrReadOnly
+
 #1 Create your views here.
 def no_rest_no_models(request):
     guests =  [
@@ -176,6 +179,9 @@ class CBV_Movies_pk(APIView):
 class Mixins_Reservations(mixins.CreateModelMixin , mixins.ListModelMixin,generics.GenericAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
     def get(self , request):
         return self.list(request)
     def post(self , request):
@@ -187,6 +193,8 @@ class Mixins_Reservations(mixins.CreateModelMixin , mixins.ListModelMixin,generi
 class Mixins_Reservations_pk(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin,generics.GenericAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
     def get(self , request , pk):
         return self.retrieve(pk)
     def put(self , request , pk):

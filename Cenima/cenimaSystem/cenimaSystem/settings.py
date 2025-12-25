@@ -43,11 +43,11 @@ INSTALLED_APPS = [
 # Authentication and permissions => using BaseAuthentication
 # => not prefered because need username and password every connections
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES':
-    ['rest_framework.authentication.BasicAuthentication'],
-    'DEFAULT_PERMISSION_CLASSES':[
-        'rest_framework.permissions.IsAuthenticated'
-    ]
+    # 'DEFAULT_AUTHENTICATION_CLASSES':
+    # ['rest_framework.authentication.BasicAuthentication'],
+    # 'DEFAULT_PERMISSION_CLASSES':[
+    #     'rest_framework.permissions.IsAuthenticated'
+    # ]
 }
 # permission types [IsAuthenticated |IsAdminUser|IsAuthenticatedOrReadOnly|DjangoModel=>+1]
 
