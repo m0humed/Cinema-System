@@ -1,5 +1,9 @@
-from django.urls import path  
+from django.urls import path  ,include
 from tickets import views
+from rest_framework.routers import DefaultRouter
+
+routers = DefaultRouter()
+routers.register("movies",views.ViewSets_Movie)
 
 urlpatterns = [
     # start FBV
@@ -20,4 +24,6 @@ urlpatterns = [
     path('Genaric/Get&SetReservations' , views.Genaric_Reservations.as_view()),
     path('Genaric/Get&put&deleteReservations/<int:pk>' , views.Genaric_Reservations_pk.as_view()),
     
+    # Start ViewSets ruting
+    path('Viewsets/AllInOne',include(routers.urls)),
 ]

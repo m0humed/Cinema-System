@@ -1,5 +1,5 @@
 from django.http.response import JsonResponse 
-from rest_framework import status , filters , generics , mixins 
+from rest_framework import status , filters , generics , mixins  , viewsets
 from rest_framework.decorators import api_view # it is using with function based view
 from .models import *
 from .HttpRequestsMethods import *
@@ -207,4 +207,13 @@ class Genaric_Reservations(generics.ListCreateAPIView):
 class Genaric_Reservations_pk(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservSerializer
+
+
+#7 ViewSets All in one
+class ViewSets_Movie(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
+    
 
